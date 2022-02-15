@@ -249,10 +249,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                   ),
                   InkWell(
                     onTap: () => toggleFullScreen(),
-                    child: Icon(
-                      Icons.fullscreen,
-                      color: Colors.white,
-                    ),
+                    child: Image.asset("images/sound.png"),
                   ),
                   Container(
                     width: 5,
