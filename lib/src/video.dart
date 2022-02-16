@@ -118,6 +118,8 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   bool m3u8show = false;
   // video full screen
   bool fullScreen = false;
+  // volume 
+  bool mute = false;
   // menu show
   bool showMenu = false;
   // auto show subtitle
@@ -224,11 +226,14 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   /// Video Player ActionBar
   Widget actionBar() {
-    return showMenu
-        ? Align(
+    // return showMenu
+    //     ? 
+    //     : Container();
+    return Align(
             alignment: Alignment.topCenter,
             child: Container(
               height: 40,
+              padding: EdgeInsets.only(top: 16,right: 16),
               width: double.infinity,
               // color: Colors.yellow,
               child: Row(
@@ -237,19 +242,68 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                   Container(
                     width: 5,
                   ),
-                  topChip(
-                    Text(m3u8quality!, style: widget.videoStyle!.qualitystyle),
-                    () {
-                      // quality function
-                      m3u8show = true;
-                    },
-                  ),
+                  // topChip(
+                  //   Text(m3u8quality!, style: widget.videoStyle!.qualitystyle),
+                  //   () {
+                  //     // quality function
+                  //     m3u8show = true;
+                  //   },
+                  // ),
+                  // Container(
+                  //   width: 5,
+                  // ),
+                  
                   Container(
-                    width: 5,
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      alignment: Alignment.center,
+                      icon: Container(
+                        height: 14,
+                        width: 14,
+                        child: Image(
+                          image: AssetImage(
+                            mute ?  "images/icon_unmute.png" : "images/icon_mute.png",
+                            package: 'yoyo_player',
+                          ),
+                        )
+                      ),
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        mute = !mute;
+                        controller!.setVolume(mute ? 0 : 1);
+                      },
+                    ),
                   ),
-                  InkWell(
-                    onTap: () => toggleFullScreen(),
-                    child: Image.asset("images/sound.png"),
+                  SizedBox(width: 12,),
+                  Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      iconSize: 32,
+                      alignment: Alignment.center,
+                      icon:Container(
+                        height: 14,
+                        width: 14,
+                        child: Image(
+                          image: AssetImage(fullScreen ? "images/icon_exit_full.png" : "images/icon_full_screen.png",
+                            package: 'yoyo_player',
+                          ),
+                        )
+                      ),
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        toggleFullScreen();
+                      },
+                    ),
                   ),
                   Container(
                     width: 5,
@@ -257,8 +311,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                 ],
               ),
             ),
-          )
-        : Container();
+          );
   }
 
   Widget m3u8list() {
@@ -667,5 +720,6 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     } else {
       OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
     }
+    fullScreen = !fullScreen;
   }
 }
