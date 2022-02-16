@@ -31,7 +31,10 @@ flutter:
   uses-material-design: true
 # To add assets to your package, add an assets section, like this:
   assets:
-    - images/
+    - images/icon_full_screen.png
+    - images/icon_mute.png
+    - images/icon_unmute.png
+    - images/icon_exit_full.png
   # - img/icon_sound.png
   # - img/icon_full_screen.png 
 #
