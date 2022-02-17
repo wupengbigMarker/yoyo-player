@@ -119,7 +119,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   // video full screen
   bool fullScreen = false;
   // volume 
-  bool mute = false;
+  bool clickVolume = false;
   // menu show
   bool showMenu = false;
   // auto show subtitle
@@ -267,15 +267,15 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                         width: 14,
                         child: Image(
                           image: AssetImage(
-                            mute ?  "images/icon_unmute.png" : "images/icon_mute.png",
+                            "images/icon_sound.png",
                             package: 'yoyo_player',
                           ),
                         )
                       ),
                       padding: EdgeInsets.zero,
                       onPressed: () {
-                        mute = !mute;
-                        controller!.setVolume(mute ? 0 : 1);
+                        clickVolume = !clickVolume;
+                        // controller!.setVolume(mute ? 0 : 1);
                       },
                     ),
                   ),

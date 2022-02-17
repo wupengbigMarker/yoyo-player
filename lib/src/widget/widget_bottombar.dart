@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Author: wp
+ * @Date: 2022-02-15 13:47:08
+ * @LastEditors: Wp
+ * @LastEditTime: 2022-02-17 11:51:00
+ * @FilePath: /yoyo_player_fork/lib/src/widget/widget_bottombar.dart
+ */
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:yoyo_player/src/responses/play_response.dart';
