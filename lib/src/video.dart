@@ -17,6 +17,8 @@ import 'model/m3u8.dart';
 import 'model/m3u8s.dart';
 import 'responses/regex_response.dart';
 import 'widget/top_chip.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 
 class YoYoPlayer extends StatefulWidget {
   ///Video[source],
@@ -353,6 +355,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   List<Widget> videoBuiltInChildren() {
     return [
       actionBar(),
+      _volumeWidget(),
       btm(),
       m3u8list(),
     ];
@@ -721,5 +724,41 @@ class _YoYoPlayerState extends State<YoYoPlayer>
       OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
     }
     fullScreen = !fullScreen;
+  }
+
+
+  Widget _volumeWidget(){
+
+    return SfRangeSliderTheme(
+      data: SfRangeSliderThemeData(
+        thumbColor: Colors.white,
+        thumbRadius: 8.0,
+        thumbStrokeColor: Colors.white,
+        thumbStrokeWidth: 0,
+        activeTrackHeight: 8,
+        inactiveTrackHeight: 8,
+        activeTrackColor: Color(0xff0091FF),
+        inactiveTrackColor: Color(0xffe4e7ed),
+        tooltipBackgroundColor: Colors.transparent,
+        // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
+        overlayColor: Colors.transparent,
+        // tooltipBackgroundColor: Colors.white
+      ),
+      child:SfSlider.vertical(
+        min: 0.0,
+        max: 1.0,
+        value: 1.0,
+        interval: 0.1,
+        showTicks: true,
+        showLabels: false,
+        enableTooltip: false,
+        minorTicksPerInterval: 0,
+        onChanged: (dynamic value) {
+          // setState(() {
+          //   _value = value;
+          // });
+        },
+      ),
+    );
   }
 }
