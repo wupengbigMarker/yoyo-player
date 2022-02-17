@@ -729,35 +729,39 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   Widget _volumeWidget(){
 
-    return SfRangeSliderTheme(
-      data: SfRangeSliderThemeData(
-        thumbColor: Colors.white,
-        thumbRadius: 8.0,
-        thumbStrokeColor: Colors.white,
-        thumbStrokeWidth: 0,
-        activeTrackHeight: 8,
-        inactiveTrackHeight: 8,
-        activeTrackColor: Color(0xff0091FF),
-        inactiveTrackColor: Color(0xffe4e7ed),
-        tooltipBackgroundColor: Colors.transparent,
-        // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
-        overlayColor: Colors.transparent,
-        // tooltipBackgroundColor: Colors.white
-      ),
-      child:SfSlider.vertical(
-        min: 0.0,
-        max: 1.0,
-        value: 1.0,
-        interval: 0.1,
-        showTicks: true,
-        showLabels: false,
-        enableTooltip: false,
-        minorTicksPerInterval: 0,
-        onChanged: (dynamic value) {
-          // setState(() {
-          //   _value = value;
-          // });
-        },
+    return Container(
+      width: 8,
+      height: 62,
+      child: SfRangeSliderTheme(
+        data: SfRangeSliderThemeData(
+          thumbColor: Colors.white,
+          thumbRadius: 8.0,
+          thumbStrokeColor: Colors.white,
+          thumbStrokeWidth: 0,
+          activeTrackHeight: 8,
+          inactiveTrackHeight: 8,
+          activeTrackColor: Color(0xff0091FF),
+          inactiveTrackColor: Color(0xffe4e7ed),
+          tooltipBackgroundColor: Colors.transparent,
+          // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
+          overlayColor: Colors.transparent,
+          // tooltipBackgroundColor: Colors.white
+        ),
+        child:SfSlider.vertical(
+          min: 0.0,
+          max: 1.0,
+          value: 1.0,
+          interval: 0.1,
+          showTicks: true,
+          showLabels: false,
+          enableTooltip: false,
+          minorTicksPerInterval: 0,
+          onChanged: (dynamic value) {
+            // setState(() {
+            //   _value = value;
+            // });
+          },
+        ),
       ),
     );
   }
