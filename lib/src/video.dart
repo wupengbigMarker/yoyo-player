@@ -168,9 +168,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
           setState(() {
             fullScreen = !fullScreen;
             _navigateLocally(context);
-            if (widget.onFullScreen != null) {
-              widget.onFullScreen!(fullScreen);
-            }
+            // if (widget.onFullScreen != null) {
+            //   widget.onFullScreen!(fullScreen);
+            // }
           });
         }
         //
@@ -278,6 +278,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                       padding: EdgeInsets.zero,
                       onPressed: () {
                         _showVolume = !_showVolume;
+                        setState(() {
+                          
+                        });
                         // controller!.setVolume(mute ? 0 : 1);
                       },
                     ),
@@ -726,6 +729,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
       OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
     }
     fullScreen = !fullScreen;
+     if (widget.onFullScreen != null) {
+      widget.onFullScreen!(fullScreen);
+     }
   }
 
 
@@ -780,7 +786,11 @@ class _YoYoPlayerState extends State<YoYoPlayer>
               onChanged: (dynamic value) {
                 // setState(() {
                   _volumeValue = value;
+                  print("volume is ${value}");
                   controller?.setVolume(_volumeValue);
+                  setState(() {
+                    
+                  });
                 // });
               },
             )

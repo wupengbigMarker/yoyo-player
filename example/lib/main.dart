@@ -3,7 +3,7 @@
  * @Author: wp
  * @Date: 2022-02-15 13:47:07
  * @LastEditors: Wp
- * @LastEditTime: 2022-02-16 14:34:03
+ * @LastEditTime: 2022-02-18 13:59:28
  * @FilePath: /example/lib/main.dart
  */
 import 'package:flutter/material.dart';
@@ -47,20 +47,22 @@ class _MyAppState extends State<MyApp> {
                   // "https://sfux-ext.sfux.info/hls/chapter/105/1588724110/1588724110.m3u8",
               videoStyle: VideoStyle(
               ),
-              videoLoadingStyle: VideoLoadingStyle(
+              videoLoadingStyle:
+               VideoLoadingStyle(
                 loading: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image(
-                        image: AssetImage('image/yoyo_logo.png'),
-                        fit: BoxFit.fitHeight,
-                        height: 50,
-                      ),
-                      Text("Loading video"),
-                    ],
-                  ),
+                  child: CircularProgressIndicator()
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     Image(
+                  //       image: AssetImage('image/yoyo_logo.png'),
+                  //       fit: BoxFit.fitHeight,
+                  //       height: 50,
+                  //     ),
+                  //     Text("Loading video"),
+                  //   ],
+                  // ),
                 ),
               ),
               onFullScreen: (t) {
