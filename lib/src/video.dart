@@ -120,8 +120,6 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   bool m3u8show = false;
   // video full screen
   bool fullScreen = false;
-  // volume 
-  bool clickVolume = false;
   // menu show
   bool showMenu = false;
   // auto show subtitle
@@ -134,6 +132,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   Timer? showTime;
   //Current ScreenSize
   Size get screenSize => MediaQuery.of(context).size;
+
+  double _volumeValue = 0.5;
+  bool _showVolume = false;
   //
   @override
   void initState() {
@@ -265,8 +266,8 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                     child: IconButton(
                       alignment: Alignment.center,
                       icon: Container(
-                        height: 14,
-                        width: 14,
+                        // height: 14,
+                        // width: 14,
                         child: Image(
                           image: AssetImage(
                             "images/icon_sound.png",
@@ -276,7 +277,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                       ),
                       padding: EdgeInsets.zero,
                       onPressed: () {
-                        clickVolume = !clickVolume;
+                        _showVolume = !_showVolume;
                         // controller!.setVolume(mute ? 0 : 1);
                       },
                     ),
@@ -293,9 +294,10 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                       iconSize: 32,
                       alignment: Alignment.center,
                       icon:Container(
-                        height: 14,
-                        width: 14,
+                        // height: 14,
+                        // width: 14,
                         child: Image(
+                          fit: BoxFit.cover,
                           image: AssetImage(fullScreen ? "images/icon_exit_full.png" : "images/icon_full_screen.png",
                             package: 'yoyo_player',
                           ),
@@ -729,40 +731,63 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   Widget _volumeWidget(){
 
-    return Container(
-      width: 8,
-      height: 62,
-      child: SfRangeSliderTheme(
-        data: SfRangeSliderThemeData(
-          thumbColor: Colors.white,
-          thumbRadius: 8.0,
-          thumbStrokeColor: Colors.white,
-          thumbStrokeWidth: 0,
-          activeTrackHeight: 8,
-          inactiveTrackHeight: 8,
-          activeTrackColor: Color(0xff0091FF),
-          inactiveTrackColor: Color(0xffe4e7ed),
-          tooltipBackgroundColor: Colors.transparent,
-          // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
-          overlayColor: Colors.transparent,
-          // tooltipBackgroundColor: Colors.white
-        ),
-        child:SfSlider.vertical(
-          min: 0.0,
-          max: 1.0,
-          value: 1.0,
-          interval: 0.1,
-          showTicks: true,
-          showLabels: false,
-          enableTooltip: false,
-          minorTicksPerInterval: 0,
-          onChanged: (dynamic value) {
-            // setState(() {
-            //   _value = value;
-            // });
-          },
-        ),
-      ),
+    return Visibility(
+      visible: _showVolume,
+      child: Stack(
+      
+      children: [
+        Positioned(
+          top: 52,
+          right: 58,
+          // width: 8,
+          // height: 62,
+          bottom: 52,
+          child:
+          
+          SfSliderTheme(
+            data: SfSliderThemeData(
+              thumbRadius: 8.0,
+              thumbStrokeColor: Colors.transparent,
+              thumbStrokeWidth: null,
+              activeTrackHeight: 8,
+              inactiveTrackHeight: 8,
+              activeTrackColor: Colors.black,
+              // inactiveTrackColor: ColorSet.gray_e4e7ed,
+              tooltipBackgroundColor: Colors.transparent,
+              // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
+              overlayColor: Color(0xff0091FF),
+              // tooltipBackgroundColor: Colors.white
+            ),
+            child:SfSlider.vertical(
+              thumbIcon: Container(
+                width: 16,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8)
+                ),
+              ),
+              activeColor: Color(0xff0091FF),
+              inactiveColor: Color(0xff02091a).withOpacity(0.1),
+              min: 0.0,
+              max: 1.0,
+              value: _volumeValue,
+              interval: 0.1,
+              showTicks: false,
+              showLabels: false,
+              enableTooltip: false,
+              // minorTicksPerInterval: 1,
+              onChanged: (dynamic value) {
+                // setState(() {
+                  _volumeValue = value;
+                  controller?.setVolume(_volumeValue);
+                // });
+              },
+            )
+          ) 
+        )
+      ],
+    )
     );
   }
 }
