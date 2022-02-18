@@ -236,15 +236,15 @@ class _YoYoPlayerState extends State<YoYoPlayer>
             alignment: Alignment.topCenter,
             child: Container(
               height: 40,
-              padding: EdgeInsets.only(top: 16,right: 16),
+              margin: EdgeInsets.only(top: 16,right: 16),
               width: double.infinity,
               // color: Colors.yellow,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: 5,
-                  ),
+                  // Container(
+                  //   width: 5,
+                  // ),
                   // topChip(
                   //   Text(m3u8quality!, style: widget.videoStyle!.qualitystyle),
                   //   () {
@@ -264,6 +264,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
+                      iconSize: 32,
                       alignment: Alignment.center,
                       icon: Container(
                         // height: 14,
@@ -312,9 +313,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                       },
                     ),
                   ),
-                  Container(
-                    width: 5,
-                  ),
+                  // Container(
+                  //   width: 5,
+                  // ),
                 ],
               ),
             ),
@@ -744,7 +745,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
       children: [
         Positioned(
           top: 52,
-          right: 58,
+          right: 54,
           // width: 8,
           // height: 62,
           bottom: 52,
@@ -786,7 +787,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
               onChanged: (dynamic value) {
                 // setState(() {
                   _volumeValue = value;
-                  print("volume is ${value}");
+                  debugPrint("volume is ${value}");
                   controller?.setVolume(_volumeValue);
                   setState(() {
                     
