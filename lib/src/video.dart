@@ -153,7 +153,8 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
     widgetsBinding.addPostFrameCallback((callback) {
       widgetsBinding.addPersistentFrameCallback((callback) {
-        if (context == null) return;
+        if(!mounted) return;
+        // if (context == null) return;
         var orientation = MediaQuery.of(context).orientation;
         bool? _fullscreen;
         if (orientation == Orientation.landscape) {
@@ -227,8 +228,20 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     );
   }
 
+  Widget _whetherShowActionBar() {
+    if(fullScreen){
+      if(showMenu){
+        return _actionBar();
+      }else{
+        return Container();
+      }
+    }else{
+      return _actionBar();
+    }
+  }
+
   /// Video Player ActionBar
-  Widget actionBar() {
+  Widget _actionBar() {
     // return showMenu
     //     ? 
     //     : Container();
@@ -360,7 +373,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   List<Widget> videoBuiltInChildren() {
     return [
-      actionBar(),
+      _whetherShowActionBar(),
       _volumeWidget(),
       btm(),
       m3u8list(),
