@@ -381,6 +381,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   }
 
   Widget btm() {
+    if(playType == "HLS"){
+      return Container();
+    }
     return showMenu
         ? bottomBar(
             controller: controller,
