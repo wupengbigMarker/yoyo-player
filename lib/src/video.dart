@@ -201,7 +201,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
           toggleControls();
         },
         onDoubleTap: () {
-          togglePlay();
+          if(playType != "HLS"){ 
+            togglePlay();
+          }
         },
         child: ClipRect(
           child: Container(
@@ -382,6 +384,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   Widget btm() {
     if(playType == "HLS"){
+      showMenu = false;
       return Container();
     }
     return showMenu
@@ -565,7 +568,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
       }
       setState(() {
         videoDuration = convertDurationToString(controller!.value.duration);
-        videoSeek = convertDurationToString(controller!.value.position);
+        // videoSeek = convertDurationToString(controller!.value.position);
         videoSeekSecond = controller!.value.position.inSeconds.toDouble();
         videoDurationSecond = controller!.value.duration.inSeconds.toDouble();
       });
@@ -575,11 +578,16 @@ class _YoYoPlayerState extends State<YoYoPlayer>
         setState(() {});
       }
     }
+    if(controller!.value.isInitialized){
+      setState(() {
+        videoSeek = convertDurationToString(controller!.value.position);
+      });
+    }
   }
 
   void createHideControlBarTimer() {
     clearHideControlBarTimer();
-    showTime = Timer(Duration(milliseconds: 5000), () {
+    showTime = Timer(Duration(milliseconds: 2000), () {
       if (controller != null && controller!.value.isPlaying) {
         if (showMenu) {
           setState(() {
@@ -740,11 +748,6 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   }
 
   void toggleFullScreen() {
-    if (fullScreen) {
-      OrientationPlugin.forceOrientation(DeviceOrientation.portraitUp);
-    } else {
-      OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
-    }
     fullScreen = !fullScreen;
      if (widget.onFullScreen != null) {
       widget.onFullScreen!(fullScreen);
@@ -754,67 +757,88 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   Widget _volumeWidget(){
 
-    return Visibility(
-      visible: _showVolume,
-      child: Stack(
+    // return Visibility(
+    //   visible: _showVolume,
+    //   child: 
+    // );
+    return Stack(
       
       children: [
+        Align(
+          alignment: Alignment.center,
+          child: Visibility(
+            visible: showMenu,
+            child: InkWell(
+              child: Icon(
+                controller!.value.isPlaying
+                    ? Icons.pause_circle_outline
+                    : Icons.play_circle_outline,
+                color: Colors.white,
+                size: 35,
+                
+              ),
+              onTap: (){
+                togglePlay();
+              },
+            )
+          )
+        ),
         Positioned(
           top: 52,
           right: 54,
           // width: 8,
-          // height: 62,
-          bottom: 52,
-          child:
-          
-          SfSliderTheme(
-            data: SfSliderThemeData(
-              thumbRadius: 8.0,
-              thumbStrokeColor: Colors.transparent,
-              thumbStrokeWidth: null,
-              activeTrackHeight: 8,
-              inactiveTrackHeight: 8,
-              activeTrackColor: Colors.black,
-              // inactiveTrackColor: ColorSet.gray_e4e7ed,
-              tooltipBackgroundColor: Colors.transparent,
-              // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
-              overlayColor: Color(0xff0091FF),
-              // tooltipBackgroundColor: Colors.white
-            ),
-            child:SfSlider.vertical(
-              thumbIcon: Container(
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8)
-                ),
+          height: 62,
+          // bottom: 52,
+          child:Visibility(
+            visible: _showVolume,
+            child: SfSliderTheme(
+              data: SfSliderThemeData(
+                thumbRadius: 8.0,
+                thumbStrokeColor: Colors.transparent,
+                thumbStrokeWidth: null,
+                activeTrackHeight: 8,
+                inactiveTrackHeight: 8,
+                activeTrackColor: Colors.black,
+                // inactiveTrackColor: ColorSet.gray_e4e7ed,
+                tooltipBackgroundColor: Colors.transparent,
+                // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
+                overlayColor: Color(0xff0091FF),
+                // tooltipBackgroundColor: Colors.white
               ),
-              activeColor: Color(0xff0091FF),
-              inactiveColor: Color(0xff02091a).withOpacity(0.1),
-              min: 0.0,
-              max: 1.0,
-              value: _volumeValue,
-              interval: 0.1,
-              showTicks: false,
-              showLabels: false,
-              enableTooltip: false,
-              // minorTicksPerInterval: 1,
-              onChanged: (dynamic value) {
-                // setState(() {
-                  _volumeValue = value;
-                  debugPrint("volume is ${value}");
-                  controller?.setVolume(_volumeValue);
-                  setState(() {
-                    
-                  });
-                // });
-              },
+              child:SfSlider.vertical(
+                thumbIcon: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                ),
+                activeColor: Color(0xff0091FF),
+                inactiveColor: Color(0xff02091a).withOpacity(0.1),
+                min: 0.0,
+                max: 1.0,
+                value: _volumeValue,
+                interval: 0.1,
+                showTicks: false,
+                showLabels: false,
+                enableTooltip: false,
+                // minorTicksPerInterval: 1,
+                onChanged: (dynamic value) {
+                  // setState(() {
+                    _volumeValue = value;
+                    debugPrint("volume is ${value}");
+                    controller?.setVolume(_volumeValue);
+                    setState(() {
+                      
+                    });
+                  // });
+                },
+              ),
             )
           ) 
         )
       ],
-    )
     );
   }
 }
