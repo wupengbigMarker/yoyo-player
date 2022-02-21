@@ -18,8 +18,8 @@ dependencies:
   video_player: ^2.2.18
   video_player_web_hls: ^0.1.11+4
   wakelock: ^0.5.2
-  syncfusion_flutter_sliders: ^19.2.51
-  syncfusion_flutter_core: ^19.2.51
+  syncfusion_flutter_sliders: ^19.4.52
+  syncfusion_flutter_core: ^19.4.52
 
 dev_dependencies:
   flutter_test:
