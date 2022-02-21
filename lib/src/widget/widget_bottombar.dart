@@ -3,7 +3,7 @@
  * @Author: wp
  * @Date: 2022-02-15 13:47:08
  * @LastEditors: Wp
- * @LastEditTime: 2022-02-21 15:27:08
+ * @LastEditTime: 2022-02-21 23:22:18
  * @FilePath: /example/Users/bm/Desktop/bigmarker/yoyo_player_fork/lib/src/widget/widget_bottombar.dart
  */
 import 'package:flutter/material.dart';
@@ -16,85 +16,45 @@ Widget bottomBar(
     String? videoDuration,
     Widget? backwardIcon,
     Widget? forwardIcon,
-    required bool showMenu,
+    required bool isFullScreen,
     Function? play}) {
-  return showMenu
-      ? Align(
+  return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            height: 30,
+            height: isFullScreen ? 80 : 40,
             child: Padding(
-              padding: EdgeInsets.all(0.0),
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              videoSeek!,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              videoDuration!,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white),
-                            ),
-                          ],
+                      InkWell(
+                        onTap: play as void Function()?,
+                        child: Icon(
+                          controller!.value.isPlaying
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          color: Colors.white,
+                          size: 35,
                         ),
                       ),
-                      VideoProgressIndicator(
-                        controller!,
+                      Expanded(
+                        child:  VideoProgressIndicator(
+                        controller,
                         allowScrubbing: true,
                         colors: VideoProgressColors(
-                            playedColor: Colors.white),
-                        padding: EdgeInsets.only(left: 0.0, right: 0.0,bottom: 0.0),
+                            playedColor: Colors.green),
+                        padding: EdgeInsets.only(left: 5.0, right: 5.0)
+                      ),),
+                      Text(
+                        videoSeek! + "/" + videoDuration!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white),
                       ),
                     ],
                   ),
-                  // Align(
-                  //   alignment: Alignment.bottomCenter,
-                  //   child: Padding(
-                  //     padding: EdgeInsets.all(5.0),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       mainAxisSize: MainAxisSize.max,
-                  //       children: [
-                  //         InkWell(
-                  //             onTap: () {
-                  //               rewind(controller);
-                  //             },
-                  //             child: backwardIcon),
-                  //         InkWell(
-                  //           onTap: play as void Function()?,
-                  //           child: Icon(
-                  //             controller.value.isPlaying
-                  //                 ? Icons.pause_circle_outline
-                  //                 : Icons.play_circle_outline,
-                  //             color: Colors.white,
-                  //             size: 35,
-                  //           ),
-                  //         ),
-                  //         InkWell(
-                  //             onTap: () {
-                  //               fastForward(controller: controller);
-                  //             },
-                  //             child: forwardIcon),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
             ),
           ),
-        )
-      : Container();
+        );
 }

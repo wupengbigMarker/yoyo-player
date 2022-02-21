@@ -130,15 +130,19 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   String? m3u8quality = "Auto";
   // time for duration
   Timer? showTime;
+  // time for fullscreen bar duration
+  Timer? volumeTime;
   //Current ScreenSize
   Size get screenSize => MediaQuery.of(context).size;
 
-  double _volumeValue = 0.5;
+  double _volumeValue = 0.0;
   bool _showVolume = false;
-  //
+
+
   @override
   void initState() {
     // getSub();
+
     urlCheck(widget.url);
     super.initState();
 
@@ -149,56 +153,32 @@ class _YoYoPlayerState extends State<YoYoPlayer>
         .animate(controlBarAnimationController);
     controlBottomBarAnimation = Tween(begin: -(36.0 + 0.0 * 2), end: 0.0)
         .animate(controlBarAnimationController);
-    var widgetsBinding = WidgetsBinding.instance!;
-
-    widgetsBinding.addPostFrameCallback((callback) {
-      widgetsBinding.addPersistentFrameCallback((callback) {
-        if(!mounted) return;
-        // if (context == null) return;
-        var orientation = MediaQuery.of(context).orientation;
-        bool? _fullscreen;
-        if (orientation == Orientation.landscape) {
-          //Horizontal screen
-          _fullscreen = true;
-          SystemChrome.setEnabledSystemUIOverlays([]);
-        } else if (orientation == Orientation.portrait) {
-          _fullscreen = false;
-          SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-        }
-        if (_fullscreen != fullScreen) {
-          setState(() {
-            fullScreen = !fullScreen;
-            _navigateLocally(context);
-            // if (widget.onFullScreen != null) {
-            //   widget.onFullScreen!(fullScreen);
-            // }
-          });
-        }
-        //
-        widgetsBinding.scheduleFrame();
-      });
-    });
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+    
     FlutterScreenWake.keepOn(true);
   }
 
   @override
   void dispose() {
     m3u8clean();
+    controlBarAnimationController.dispose();
     controller!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     final videoChildren = <Widget>[
       GestureDetector(
         onTap: () {
-          toggleControls();
+          if(playType != "HLS"){
+            toggleControls();
+            
+          }else{
+            if(fullScreen){
+              toggleControls();
+            }
+          }
         },
         onDoubleTap: () {
           if(playType != "HLS"){ 
@@ -242,7 +222,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     }
   }
 
-  /// Video Player ActionBar
+  /// Video Player ActionBar sound and full screen
   Widget _actionBar() {
     // return showMenu
     //     ? 
@@ -257,20 +237,6 @@ class _YoYoPlayerState extends State<YoYoPlayer>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // Container(
-                  //   width: 5,
-                  // ),
-                  // topChip(
-                  //   Text(m3u8quality!, style: widget.videoStyle!.qualitystyle),
-                  //   () {
-                  //     // quality function
-                  //     m3u8show = true;
-                  //   },
-                  // ),
-                  // Container(
-                  //   width: 5,
-                  // ),
-                  
                   Container(
                     height: 32,
                     width: 32,
@@ -294,10 +260,10 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                       padding: EdgeInsets.zero,
                       onPressed: () {
                         _showVolume = !_showVolume;
+                        addVolumeTimer();
                         setState(() {
                           
                         });
-                        // controller!.setVolume(mute ? 0 : 1);
                       },
                     ),
                   ),
@@ -378,13 +344,12 @@ class _YoYoPlayerState extends State<YoYoPlayer>
       _whetherShowActionBar(),
       _volumeWidget(),
       btm(),
-      m3u8list(),
+      // m3u8list(),
     ];
   }
 
   Widget btm() {
     if(playType == "HLS"){
-      showMenu = false;
       return Container();
     }
     return showMenu
@@ -394,7 +359,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
             videoDuration: "$videoDuration",
             forwardIcon: widget.videoStyle!.forward,
             backwardIcon: widget.videoStyle!.backward,
-            showMenu: showMenu,
+            isFullScreen: fullScreen,
             play: () => togglePlay())
         : Container();
   }
@@ -558,6 +523,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     videoInit(url);
     controller!.addListener(listener);
     controller!.play();
+    // controller!.setVolume(_volumeValue);
   }
 
 // video Listener
@@ -587,7 +553,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   void createHideControlBarTimer() {
     clearHideControlBarTimer();
-    showTime = Timer(Duration(milliseconds: 2000), () {
+    showTime = Timer(Duration(milliseconds: 4000), () {
       if (controller != null && controller!.value.isPlaying) {
         if (showMenu) {
           setState(() {
@@ -598,6 +564,23 @@ class _YoYoPlayerState extends State<YoYoPlayer>
         }
       }
     });
+  }
+
+  void addVolumeTimer() {
+    removeVolumeTimer();
+    volumeTime = Timer(Duration(milliseconds: 4000), () {
+      if (controller != null ) {
+        if (_showVolume) {
+          setState(() {
+            _showVolume = false;
+          });
+        }
+      }
+    });
+  }
+
+  void removeVolumeTimer() {
+    volumeTime?.cancel();
   }
 
   void clearHideControlBarTimer() {
@@ -654,6 +637,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                   .then((_) => setState(() => hasInitError = false))
                   .catchError((e) => setState(() => hasInitError = true));
       }
+      controller!.setVolume(_volumeValue);
     } else {
       print(
           "--- Player Status ---\nplay url : $url\noffline : $offline\n--- start playing –––");
@@ -757,38 +741,12 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   Widget _volumeWidget(){
 
-    // return Visibility(
-    //   visible: _showVolume,
-    //   child: 
-    // );
     return Stack(
-      
       children: [
-        Align(
-          alignment: Alignment.center,
-          child: Visibility(
-            visible: showMenu,
-            child: InkWell(
-              child: Icon(
-                controller!.value.isPlaying
-                    ? Icons.pause_circle_outline
-                    : Icons.play_circle_outline,
-                color: Colors.white,
-                size: 35,
-                
-              ),
-              onTap: (){
-                togglePlay();
-              },
-            )
-          )
-        ),
         Positioned(
           top: 52,
           right: 54,
-          // width: 8,
-          height: 62,
-          // bottom: 52,
+          bottom: 52,
           child:Visibility(
             visible: _showVolume,
             child: SfSliderTheme(
@@ -823,6 +781,9 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                 showTicks: false,
                 showLabels: false,
                 enableTooltip: false,
+                onChangeEnd: (val){
+                  addVolumeTimer();
+                },
                 // minorTicksPerInterval: 1,
                 onChanged: (dynamic value) {
                   // setState(() {
