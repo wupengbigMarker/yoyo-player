@@ -3,7 +3,7 @@
  * @Author: wp
  * @Date: 2022-02-15 13:47:08
  * @LastEditors: Wp
- * @LastEditTime: 2022-02-21 23:22:18
+ * @LastEditTime: 2022-02-22 00:11:55
  * @FilePath: /example/Users/bm/Desktop/bigmarker/yoyo_player_fork/lib/src/widget/widget_bottombar.dart
  */
 import 'package:flutter/material.dart';
@@ -43,9 +43,10 @@ Widget bottomBar(
                         controller,
                         allowScrubbing: true,
                         colors: VideoProgressColors(
-                            playedColor: Colors.green),
-                        padding: EdgeInsets.only(left: 5.0, right: 5.0)
+                            playedColor: Colors.white),
+                        padding: EdgeInsets.only(left: 5.0, right: 10.0)
                       ),),
+
                       Text(
                         videoSeek! + "/" + videoDuration!,
                         style: TextStyle(
