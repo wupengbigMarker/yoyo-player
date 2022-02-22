@@ -783,10 +783,13 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                 enableTooltip: false,
                 onChangeEnd: (val){
                   addVolumeTimer();
+                  createHideControlBarTimer();
                 },
                 // minorTicksPerInterval: 1,
                 onChanged: (dynamic value) {
                   // setState(() {
+                    clearHideControlBarTimer();
+                    removeVolumeTimer();
                     _volumeValue = value;
                     debugPrint("volume is ${value}");
                     controller?.setVolume(_volumeValue);
