@@ -13,13 +13,13 @@ dependencies:
 
   http: ^0.13.3
   orientation: ^1.3.0
-  path_provider: ^2.0.2
+  path_provider: ^2.0.9
   flutter_screen_wake: ^1.0.2
   video_player: ^2.2.18
   video_player_web_hls: ^0.1.11+4
   wakelock: ^0.5.2
-  syncfusion_flutter_sliders: ^19.4.52
-  syncfusion_flutter_core: ^19.4.52
+  syncfusion_flutter_sliders: ^20.1.48
+  syncfusion_flutter_core: ^20.1.48
 
 dev_dependencies:
   flutter_test:
