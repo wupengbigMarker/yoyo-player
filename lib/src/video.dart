@@ -19,6 +19,7 @@ import 'responses/regex_response.dart';
 import 'widget/top_chip.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:volume_controller/volume_controller.dart';
 
 class YoYoPlayer extends StatefulWidget {
   ///Video[source],
@@ -155,11 +156,20 @@ class _YoYoPlayerState extends State<YoYoPlayer>
         .animate(controlBarAnimationController);
     
     FlutterScreenWake.keepOn(true);
+
+    //监听系统播放音量
+    VolumeController().listener((volume) {
+      _volumeValue = volume;
+      _showVolume = true;
+      addVolumeTimer();
+      controller?.setVolume(volume);
+    });
   }
 
   @override
   void dispose() {
     m3u8clean();
+    VolumeController().removeListener();
     controlBarAnimationController.dispose();
     controller!.dispose();
     super.dispose();
@@ -792,7 +802,10 @@ class _YoYoPlayerState extends State<YoYoPlayer>
                     removeVolumeTimer();
                     _volumeValue = value;
                     debugPrint("volume is ${value}");
+                    //视频播放音量
                     controller?.setVolume(_volumeValue);
+                    //系统volume
+                    VolumeController().setVolume(_volumeValue);
                     setState(() {
                       
                     });

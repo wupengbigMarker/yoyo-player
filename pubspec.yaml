@@ -20,7 +20,7 @@ dependencies:
   wakelock: ^0.5.2
   syncfusion_flutter_sliders: ^20.1.48
   syncfusion_flutter_core: ^20.1.48
-
+  volume_controller: ^2.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

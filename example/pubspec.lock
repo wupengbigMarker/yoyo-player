@@ -357,6 +357,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.11+4"
+  volume_controller:
+    dependency: transitive
+    description:
+      name: volume_controller
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.3"
   wakelock:
     dependency: transitive
     description:

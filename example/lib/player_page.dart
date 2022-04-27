@@ -3,7 +3,7 @@
  * @Author: wp
  * @Date: 2022-02-20 14:41:19
  * @LastEditors: Wp
- * @LastEditTime: 2022-02-22 11:24:27
+ * @LastEditTime: 2022-04-27 13:53:11
  * @FilePath: /example/lib/player_page.dart
  */
 
@@ -45,8 +45,7 @@ class _PlayerPageState extends State<PlayerPage>{
               child: YoYoPlayer(
                 aspectRatio: 16 / 9,
                 url:
-                    // "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
-                    "https://wrtc746515.bigmarker.com/hls/a0c9132cf334/f7e9fca116de14cd36bf9bba6ab3d415.m3u8",
+                    "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
                     // "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
                     // "https://player.vimeo.com/external/440218055.m3u8?s=7ec886b4db9c3a52e0e7f5f917ba7287685ef67f&oauth2_token_id=1360367101",
                     // "https://sfux-ext.sfux.info/hls/chapter/105/1588724110/1588724110.m3u8",
