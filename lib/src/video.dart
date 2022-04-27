@@ -138,7 +138,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   double _volumeValue = 0.0;
   bool _showVolume = false;
-
+  bool _isFristOpen = true;
 
   @override
   void initState() {
@@ -160,10 +160,16 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     //监听系统播放音量
     VolumeController().listener((volume) {
       _volumeValue = volume;
-      _showVolume = true;
+      debugPrint("系统音量");
+      if(!_isFristOpen){
+        _showVolume = true;
+      }else{
+        _isFristOpen = false;
+      }
       addVolumeTimer();
       controller?.setVolume(volume);
     });
+
   }
 
   @override
