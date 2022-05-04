@@ -3,7 +3,7 @@
  * @Author: wp
  * @Date: 2022-02-20 14:41:19
  * @LastEditors: Wp
- * @LastEditTime: 2022-05-04 11:29:17
+ * @LastEditTime: 2022-05-04 13:48:12
  * @FilePath: /example/lib/player_page.dart
  */
 
@@ -64,10 +64,17 @@ class _PlayerPageState extends State<PlayerPage>{
                          SystemChrome.setPreferredOrientations([
                           DeviceOrientation.landscapeRight, //全屏时旋转方向，左边
                         ]);
+//                         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+//   SystemUiOverlay.top
+// ]);
+                        SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
                       }else{
                          SystemChrome.setPreferredOrientations([
                           DeviceOrientation.portraitUp, 
                         ]);
+                        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
                       }
                       setState(() {
                     });
