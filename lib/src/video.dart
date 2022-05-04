@@ -159,15 +159,16 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
     //监听系统播放音量
     VolumeController().listener((volume) {
-      _volumeValue = volume;
-      debugPrint("系统音量");
       if(!_isFristOpen){
         _showVolume = true;
+        _volumeValue = volume;
+        addVolumeTimer();
       }else{
+        _volumeValue = 0;
         _isFristOpen = false;
       }
-      addVolumeTimer();
-      controller?.setVolume(volume);
+      controller?.setVolume(_volumeValue);
+      debugPrint("----音量:$_volumeValue");
     });
 
   }
@@ -176,6 +177,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
   void dispose() {
     m3u8clean();
     VolumeController().removeListener();
+    removeVolumeTimer();
     controlBarAnimationController.dispose();
     controller!.dispose();
     super.dispose();
@@ -584,12 +586,15 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   void addVolumeTimer() {
     removeVolumeTimer();
-    volumeTime = Timer(Duration(milliseconds: 4000), () {
+    volumeTime = Timer(Duration(milliseconds: 2000), () {
       if (controller != null ) {
         if (_showVolume) {
-          setState(() {
-            _showVolume = false;
-          });
+          if(mounted){
+            setState(() {
+              _showVolume = false;
+            });
+          }
+          
         }
       }
     });
@@ -597,6 +602,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
 
   void removeVolumeTimer() {
     volumeTime?.cancel();
+    volumeTime = null;
   }
 
   void clearHideControlBarTimer() {
