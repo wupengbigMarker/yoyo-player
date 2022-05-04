@@ -178,6 +178,7 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     m3u8clean();
     VolumeController().removeListener();
     removeVolumeTimer();
+    clearHideControlBarTimer();
     controlBarAnimationController.dispose();
     controller!.dispose();
     super.dispose();
@@ -574,11 +575,14 @@ class _YoYoPlayerState extends State<YoYoPlayer>
     showTime = Timer(Duration(milliseconds: 4000), () {
       if (controller != null && controller!.value.isPlaying) {
         if (showMenu) {
-          setState(() {
-            showMenu = false;
-            m3u8show = false;
-            controlBarAnimationController.reverse();
-          });
+          if(mounted){
+            setState(() {
+              showMenu = false;
+              m3u8show = false;
+              controlBarAnimationController.reverse();
+            });
+          }
+          
         }
       }
     });
