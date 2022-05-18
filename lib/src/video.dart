@@ -551,6 +551,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
       if (!await Wakelock.enabled) {
         await Wakelock.enable();
       }
+      if(!mounted) return;
       setState(() {
         videoDuration = convertDurationToString(controller!.value.duration);
         // videoSeek = convertDurationToString(controller!.value.position);
@@ -560,10 +561,12 @@ class YoYoPlayerState extends State<YoYoPlayer>
     } else {
       if (await Wakelock.enabled) {
         await Wakelock.disable();
+        if(!mounted) return;
         setState(() {});
       }
     }
     if(controller!.value.isInitialized){
+      if(!mounted) return;
       setState(() {
         videoSeek = convertDurationToString(controller!.value.position);
       });
