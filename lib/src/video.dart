@@ -82,10 +82,10 @@ class YoYoPlayer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _YoYoPlayerState createState() => _YoYoPlayerState();
+  YoYoPlayerState createState() => YoYoPlayerState();
 }
 
-class _YoYoPlayerState extends State<YoYoPlayer>
+class YoYoPlayerState extends State<YoYoPlayer>
     with SingleTickerProviderStateMixin {
   //video play type (hls,mp4,mkv,offline)
   String? playType;
