@@ -36,6 +36,7 @@ flutter:
     - images/icon_full_screen.png
     - images/icon_sound.png
     - images/icon_exit_full.png
+    - images/icon_mute.png
   # - img/icon_sound.png
   # - img/icon_full_screen.png 
 #

@@ -270,7 +270,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
                         // height: 14,
                         // width: 14,
                         child: Image(
-                          image: AssetImage(
+                          image: AssetImage(_volumeValue == 0 ? "images/icon_mute.png" :
                             "images/icon_sound.png",
                             package: 'yoyo_player',
                           ),
@@ -824,7 +824,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
                     //视频播放音量
                     controller?.setVolume(_volumeValue);
                     //系统volume
-                    VolumeController().setVolume(_volumeValue);
+                    VolumeController().setVolume(_volumeValue,showSystemUI: false);
                     setState(() {
                       
                     });
