@@ -738,7 +738,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
     for (int i = 2; i < yoyo.length; i++) {
       try {
         final Directory directory = await getApplicationDocumentsDirectory();
-        final File file = File('${directory.path}/${yoyo[i].dataQuality}.m3u8');
+        final File file = File('${directory.path}/yoyo${yoyo[i].dataQuality}.m3u8');
         file.delete();
         print("delete success $file");
       } catch (e) {
