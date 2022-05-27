@@ -140,6 +140,9 @@ class YoYoPlayerState extends State<YoYoPlayer>
   bool _showVolume = false;
   bool _isFristOpen = true;
 
+  ///接收强制静音
+  bool _forceMute = true;
+
   @override
   void initState() {
     // getSub();
@@ -167,7 +170,10 @@ class YoYoPlayerState extends State<YoYoPlayer>
         _volumeValue = 0;
         _isFristOpen = false;
       }
-      controller?.setVolume(_volumeValue);
+      ///非强制静音下，视频声音可随系统按键调整
+      if(!_forceMute){
+        controller?.setVolume(_volumeValue);
+      }
       debugPrint("----音量:$_volumeValue");
     });
 
@@ -182,6 +188,21 @@ class YoYoPlayerState extends State<YoYoPlayer>
     controlBarAnimationController.dispose();
     controller!.dispose();
     super.dispose();
+  }
+
+  forceMuteAction(bool isMute){
+    _forceMute = isMute;
+    if(isMute){
+      controller?.setVolume(0);
+    }else{
+      controller?.setVolume(_volumeValue);
+    }
+    if(mounted){
+      setState(() {
+      
+      });
+    }
+    
   }
 
   @override
@@ -270,7 +291,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
                         // height: 14,
                         // width: 14,
                         child: Image(
-                          image: AssetImage(_volumeValue == 0 ? "images/icon_mute.png" :
+                          image: AssetImage(_volumeValue == 0  || _forceMute ? "images/icon_mute.png" :
                             "images/icon_sound.png",
                             package: 'yoyo_player',
                           ),
