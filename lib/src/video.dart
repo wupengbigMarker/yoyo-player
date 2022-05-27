@@ -140,8 +140,8 @@ class YoYoPlayerState extends State<YoYoPlayer>
   bool _showVolume = false;
   bool _isFristOpen = true;
 
-  ///接收强制静音
-  bool _forceMute = true;
+  ///接收强制静音,默认关掉静音
+  bool _forceMute = false;
 
   @override
   void initState() {
