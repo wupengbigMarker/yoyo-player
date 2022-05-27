@@ -843,8 +843,10 @@ class YoYoPlayerState extends State<YoYoPlayer>
                     _volumeValue = value;
                     debugPrint("volume is ${value}");
                     //视频播放音量
-                    controller?.setVolume(_volumeValue);
-                    //系统volume
+                    //强制静音时，视屏声音不开启
+                    if(!_forceMute){
+                      controller?.setVolume(_volumeValue);
+                    }                    //系统volume
                     VolumeController().setVolume(_volumeValue,showSystemUI: false);
                     setState(() {
                       
