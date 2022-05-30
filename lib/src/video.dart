@@ -291,7 +291,8 @@ class YoYoPlayerState extends State<YoYoPlayer>
                         // height: 14,
                         // width: 14,
                         child: Image(
-                          image: AssetImage(_volumeValue == 0  || _forceMute ? "images/icon_mute.png" :
+                          //
+                          image: AssetImage(_volumeValue == 0 ? "images/icon_mute.png" :
                             "images/icon_sound.png",
                             package: 'yoyo_player',
                           ),
