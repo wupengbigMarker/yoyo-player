@@ -157,26 +157,25 @@ class YoYoPlayerState extends State<YoYoPlayer>
         .animate(controlBarAnimationController);
     controlBottomBarAnimation = Tween(begin: -(36.0 + 0.0 * 2), end: 0.0)
         .animate(controlBarAnimationController);
-    
+
     FlutterScreenWake.keepOn(true);
 
     //监听系统播放音量
     VolumeController().listener((volume) {
-      if(!_isFristOpen){
+      if (!_isFristOpen) {
         _showVolume = true;
         _volumeValue = volume;
         addVolumeTimer();
-      }else{
+      } else {
         _volumeValue = 0;
         _isFristOpen = false;
       }
+
       ///非强制静音下，视频声音可随系统按键调整
-      if(!_forceMute){
+      if (!_forceMute) {
         controller?.setVolume(_volumeValue);
       }
-      debugPrint("----音量:$_volumeValue");
     });
-
   }
 
   @override
@@ -190,38 +189,33 @@ class YoYoPlayerState extends State<YoYoPlayer>
     super.dispose();
   }
 
-  forceMuteAction(bool isMute){
+  forceMuteAction(bool isMute) {
     _forceMute = isMute;
-    if(isMute){
+    if (isMute) {
       controller?.setVolume(0);
-    }else{
+    } else {
       controller?.setVolume(_volumeValue);
     }
-    if(mounted){
-      setState(() {
-      
-      });
+    if (mounted) {
+      setState(() {});
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
-
     final videoChildren = <Widget>[
       GestureDetector(
         onTap: () {
-          if(playType != "HLS"){
+          if (playType != "HLS") {
             toggleControls();
-            
-          }else{
-            if(fullScreen){
+          } else {
+            if (fullScreen) {
               toggleControls();
             }
           }
         },
         onDoubleTap: () {
-          if(playType != "HLS"){ 
+          if (playType != "HLS") {
             togglePlay();
           }
         },
@@ -251,13 +245,13 @@ class YoYoPlayerState extends State<YoYoPlayer>
   }
 
   Widget _whetherShowActionBar() {
-    if(fullScreen){
-      if(showMenu){
+    if (fullScreen) {
+      if (showMenu) {
         return _actionBar();
-      }else{
+      } else {
         return Container();
       }
-    }else{
+    } else {
       return _actionBar();
     }
   }
@@ -265,83 +259,86 @@ class YoYoPlayerState extends State<YoYoPlayer>
   /// Video Player ActionBar sound and full screen
   Widget _actionBar() {
     // return showMenu
-    //     ? 
+    //     ?
     //     : Container();
     return Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: 40,
-              margin: EdgeInsets.only(top: 16,right: 16),
-              width: double.infinity,
-              // color: Colors.yellow,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      iconSize: 32,
-                      alignment: Alignment.center,
-                      icon: Container(
-                        // height: 14,
-                        // width: 14,
-                        child: Image(
-                          //
-                          image: AssetImage(_volumeValue == 0 ? "images/icon_mute.png" :
-                            "images/icon_sound.png",
-                            package: 'yoyo_player',
-                          ),
-                        )
-                      ),
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        _showVolume = !_showVolume;
-                        addVolumeTimer();
-                        setState(() {
-                          
-                        });
-                      },
-                    ),
+      alignment: Alignment.topCenter,
+      child: Container(
+        height: 40,
+        margin: EdgeInsets.only(top: 16, right: 16),
+        width: double.infinity,
+        // color: Colors.yellow,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              height: 32,
+              width: 32,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                iconSize: 32,
+                alignment: Alignment.center,
+                icon: Container(
+                    // height: 14,
+                    // width: 14,
+                    child: Image(
+                  //
+                  image: AssetImage(
+                    _volumeValue == 0
+                        ? "images/icon_mute.png"
+                        : "images/icon_sound.png",
+                    package: 'yoyo_player',
                   ),
-                  SizedBox(width: 12,),
-                  Container(
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      iconSize: 32,
-                      alignment: Alignment.center,
-                      icon:Container(
-                        // height: 14,
-                        // width: 14,
-                        child: Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage(fullScreen ? "images/icon_exit_full.png" : "images/icon_full_screen.png",
-                            package: 'yoyo_player',
-                          ),
-                        )
-                      ),
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        toggleFullScreen();
-                      },
-                    ),
-                  ),
-                  // Container(
-                  //   width: 5,
-                  // ),
-                ],
+                )),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  _showVolume = !_showVolume;
+                  addVolumeTimer();
+                  setState(() {});
+                },
               ),
             ),
-          );
+            SizedBox(
+              width: 12,
+            ),
+            Container(
+              height: 32,
+              width: 32,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                iconSize: 32,
+                alignment: Alignment.center,
+                icon: Container(
+                    // height: 14,
+                    // width: 14,
+                    child: Image(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    fullScreen
+                        ? "images/icon_exit_full.png"
+                        : "images/icon_full_screen.png",
+                    package: 'yoyo_player',
+                  ),
+                )),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  toggleFullScreen();
+                },
+              ),
+            ),
+            // Container(
+            //   width: 5,
+            // ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget m3u8list() {
@@ -390,7 +387,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
   }
 
   Widget btm() {
-    if(playType == "HLS"){
+    if (playType == "HLS") {
       return Container();
     }
     return showMenu
@@ -573,7 +570,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
       if (!await Wakelock.enabled) {
         await Wakelock.enable();
       }
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {
         videoDuration = convertDurationToString(controller!.value.duration);
         // videoSeek = convertDurationToString(controller!.value.position);
@@ -583,12 +580,12 @@ class YoYoPlayerState extends State<YoYoPlayer>
     } else {
       if (await Wakelock.enabled) {
         await Wakelock.disable();
-        if(!mounted) return;
+        if (!mounted) return;
         setState(() {});
       }
     }
-    if(controller!.value.isInitialized){
-      if(!mounted) return;
+    if (controller!.value.isInitialized) {
+      if (!mounted) return;
       setState(() {
         videoSeek = convertDurationToString(controller!.value.position);
       });
@@ -600,14 +597,13 @@ class YoYoPlayerState extends State<YoYoPlayer>
     showTime = Timer(Duration(milliseconds: 4000), () {
       if (controller != null && controller!.value.isPlaying) {
         if (showMenu) {
-          if(mounted){
+          if (mounted) {
             setState(() {
               showMenu = false;
               m3u8show = false;
               controlBarAnimationController.reverse();
             });
           }
-          
         }
       }
     });
@@ -616,14 +612,13 @@ class YoYoPlayerState extends State<YoYoPlayer>
   void addVolumeTimer() {
     removeVolumeTimer();
     volumeTime = Timer(Duration(milliseconds: 2000), () {
-      if (controller != null ) {
+      if (controller != null) {
         if (_showVolume) {
-          if(mounted){
+          if (mounted) {
             setState(() {
               _showVolume = false;
             });
           }
-          
         }
       }
     });
@@ -718,7 +713,8 @@ class YoYoPlayerState extends State<YoYoPlayer>
       }
       return;
     }
-    ModalRoute.of(context)!.addLocalHistoryEntry(LocalHistoryEntry(onRemove: () {
+    ModalRoute.of(context)!
+        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: () {
       if (fullScreen) toggleFullScreen();
     }));
   }
@@ -760,7 +756,8 @@ class YoYoPlayerState extends State<YoYoPlayer>
     for (int i = 2; i < yoyo.length; i++) {
       try {
         final Directory directory = await getApplicationDocumentsDirectory();
-        final File file = File('${directory.path}/yoyo${yoyo[i].dataQuality}.m3u8');
+        final File file =
+            File('${directory.path}/yoyo${yoyo[i].dataQuality}.m3u8');
         file.delete();
         print("delete success $file");
       } catch (e) {
@@ -784,80 +781,74 @@ class YoYoPlayerState extends State<YoYoPlayer>
 
   void toggleFullScreen() {
     fullScreen = !fullScreen;
-     if (widget.onFullScreen != null) {
+    if (widget.onFullScreen != null) {
       widget.onFullScreen!(fullScreen);
-     }
+    }
   }
 
-
-  Widget _volumeWidget(){
-
+  Widget _volumeWidget() {
     return Stack(
       children: [
         Positioned(
-          top: 52,
-          right: 54,
-          bottom: 52,
-          child:Visibility(
-            visible: _showVolume,
-            child: SfSliderTheme(
-              data: SfSliderThemeData(
-                thumbRadius: 8.0,
-                thumbStrokeColor: Colors.transparent,
-                thumbStrokeWidth: null,
-                activeTrackHeight: 8,
-                inactiveTrackHeight: 8,
-                activeTrackColor: Colors.black,
-                // inactiveTrackColor: ColorSet.gray_e4e7ed,
-                tooltipBackgroundColor: Colors.transparent,
-                // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
-                overlayColor: Color(0xff0091FF),
-                // tooltipBackgroundColor: Colors.white
-              ),
-              child:SfSlider.vertical(
-                thumbIcon: Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8)
+            top: 52,
+            right: 54,
+            bottom: 52,
+            child: Visibility(
+                visible: _showVolume,
+                child: SfSliderTheme(
+                  data: SfSliderThemeData(
+                    thumbRadius: 8.0,
+                    thumbStrokeColor: Colors.transparent,
+                    thumbStrokeWidth: null,
+                    activeTrackHeight: 8,
+                    inactiveTrackHeight: 8,
+                    activeTrackColor: Colors.black,
+                    // inactiveTrackColor: ColorSet.gray_e4e7ed,
+                    tooltipBackgroundColor: Colors.transparent,
+                    // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
+                    overlayColor: Color(0xff0091FF),
+                    // tooltipBackgroundColor: Colors.white
                   ),
-                ),
-                activeColor: Color(0xff0091FF),
-                inactiveColor: Color(0xff02091a).withOpacity(0.1),
-                min: 0.0,
-                max: 1.0,
-                value: _volumeValue,
-                interval: 0.1,
-                showTicks: false,
-                showLabels: false,
-                enableTooltip: false,
-                onChangeEnd: (val){
-                  addVolumeTimer();
-                  createHideControlBarTimer();
-                },
-                // minorTicksPerInterval: 1,
-                onChanged: (dynamic value) {
-                  // setState(() {
-                    clearHideControlBarTimer();
-                    removeVolumeTimer();
-                    _volumeValue = value;
-                    debugPrint("volume is ${value}");
-                    //视频播放音量
-                    //强制静音时，视屏声音不开启
-                    if(!_forceMute){
-                      controller?.setVolume(_volumeValue);
-                    }                    //系统volume
-                    VolumeController().setVolume(_volumeValue,showSystemUI: false);
-                    setState(() {
-                      
-                    });
-                  // });
-                },
-              ),
-            )
-          ) 
-        )
+                  child: SfSlider.vertical(
+                    thumbIcon: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8)),
+                    ),
+                    activeColor: Color(0xff0091FF),
+                    inactiveColor: Color(0xff02091a).withOpacity(0.1),
+                    min: 0.0,
+                    max: 1.0,
+                    value: _volumeValue,
+                    interval: 0.1,
+                    showTicks: false,
+                    showLabels: false,
+                    enableTooltip: false,
+                    onChangeEnd: (val) {
+                      addVolumeTimer();
+                      createHideControlBarTimer();
+                    },
+                    // minorTicksPerInterval: 1,
+                    onChanged: (dynamic value) {
+                      // setState(() {
+                      clearHideControlBarTimer();
+                      removeVolumeTimer();
+                      _volumeValue = value;
+                      debugPrint("volume is ${value}");
+                      //视频播放音量
+                      //强制静音时，视屏声音不开启
+                      if (!_forceMute) {
+                        controller?.setVolume(_volumeValue);
+                      } //系统volume
+                      VolumeController()
+                          .setVolume(_volumeValue, showSystemUI: false);
+                      setState(() {});
+                      // });
+                    },
+                  ),
+                )))
       ],
     );
   }
