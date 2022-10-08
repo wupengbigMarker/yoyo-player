@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screen_wake/flutter_screen_wake.dart';
@@ -175,6 +176,10 @@ class YoYoPlayerState extends State<YoYoPlayer>
       if (!_forceMute) {
         controller?.setVolume(_volumeValue);
       }
+    });
+
+    AudioSession.instance.then((audioSession) async {
+      await audioSession.configure(AudioSessionConfiguration.speech());
     });
   }
 
