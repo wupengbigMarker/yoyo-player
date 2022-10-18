@@ -163,19 +163,27 @@ class YoYoPlayerState extends State<YoYoPlayer>
 
     //监听系统播放音量
     VolumeController().listener((volume) {
-      if (!_isFristOpen) {
-        _showVolume = true;
-        _volumeValue = volume;
-        addVolumeTimer();
-      } else {
-        _volumeValue = 0;
-        _isFristOpen = false;
-      }
+      // if (!_isFristOpen) {
+      //   _showVolume = true;
+      //   _volumeValue = volume;
+      //   addVolumeTimer();
+      // } else {
+      //   _volumeValue = 0;
+      //   _isFristOpen = false;
+      // }
 
-      ///非强制静音下，视频声音可随系统按键调整
-      if (!_forceMute) {
-        controller?.setVolume(_volumeValue);
+      // ///非强制静音下，视频声音可随系统按键调整
+      // if (!_forceMute) {
+      //   
+      // }
+      _volumeValue = volume;
+      controller?.setVolume(_volumeValue);
+      if(volume == 0){
+        _forceMute = true;
+      }else{
+        _forceMute = false;
       }
+      
     });
 
     AudioSession.instance.then((audioSession) async {
@@ -187,7 +195,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
   void dispose() {
     m3u8clean();
     VolumeController().removeListener();
-    removeVolumeTimer();
+    // removeVolumeTimer();
     clearHideControlBarTimer();
     controlBarAnimationController.dispose();
     controller!.dispose();
@@ -195,7 +203,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
   }
 
   forceMuteAction(bool isMute) {
-    _forceMute = isMute;
+    // _forceMute = isMute;
     if (isMute) {
       controller?.setVolume(0);
     } else {
@@ -292,7 +300,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
                     child: Image(
                   //
                   image: AssetImage(
-                    _volumeValue == 0
+                    _forceMute
                         ? "images/icon_mute.png"
                         : "images/icon_sound.png",
                     package: 'yoyo_player',
@@ -301,7 +309,9 @@ class YoYoPlayerState extends State<YoYoPlayer>
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   _showVolume = !_showVolume;
-                  addVolumeTimer();
+                  _forceMute = !_forceMute;
+                  forceMuteAction(_forceMute);
+                  // addVolumeTimer();
                   setState(() {});
                 },
               ),
@@ -385,7 +395,7 @@ class YoYoPlayerState extends State<YoYoPlayer>
   List<Widget> videoBuiltInChildren() {
     return [
       _whetherShowActionBar(),
-      _volumeWidget(),
+      // _volumeWidget(),
       btm(),
       // m3u8list(),
     ];
@@ -614,30 +624,31 @@ class YoYoPlayerState extends State<YoYoPlayer>
     });
   }
 
-  void addVolumeTimer() {
-    removeVolumeTimer();
-    volumeTime = Timer(Duration(milliseconds: 2000), () {
-      if (controller != null) {
-        if (_showVolume) {
-          if (mounted) {
-            setState(() {
-              _showVolume = false;
-            });
-          }
-        }
-      }
-    });
-  }
+  // void addVolumeTimer() {
+  //   removeVolumeTimer();
+  //   volumeTime = Timer(Duration(milliseconds: 2000), () {
+  //     if (controller != null) {
+  //       if (_showVolume) {
+  //         if (mounted) {
+  //           setState(() {
+  //             _showVolume = false;
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
-  void removeVolumeTimer() {
-    volumeTime?.cancel();
-    volumeTime = null;
-  }
+  // void removeVolumeTimer() {
+  //   volumeTime?.cancel();
+  //   volumeTime = null;
+  // }
 
   void clearHideControlBarTimer() {
     showTime?.cancel();
   }
 
+  // 展示控制音量和全屏键
   void toggleControls() {
     clearHideControlBarTimer();
 
@@ -791,70 +802,70 @@ class YoYoPlayerState extends State<YoYoPlayer>
     }
   }
 
-  Widget _volumeWidget() {
-    return Stack(
-      children: [
-        Positioned(
-            top: 52,
-            right: 54,
-            bottom: 52,
-            child: Visibility(
-                visible: _showVolume,
-                child: SfSliderTheme(
-                  data: SfSliderThemeData(
-                    thumbRadius: 8.0,
-                    thumbStrokeColor: Colors.transparent,
-                    thumbStrokeWidth: null,
-                    activeTrackHeight: 8,
-                    inactiveTrackHeight: 8,
-                    activeTrackColor: Colors.black,
-                    // inactiveTrackColor: ColorSet.gray_e4e7ed,
-                    tooltipBackgroundColor: Colors.transparent,
-                    // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
-                    overlayColor: Color(0xff0091FF),
-                    // tooltipBackgroundColor: Colors.white
-                  ),
-                  child: SfSlider.vertical(
-                    thumbIcon: Container(
-                      width: 16,
-                      height: 16,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                    activeColor: Color(0xff0091FF),
-                    inactiveColor: Color(0xff02091a).withOpacity(0.1),
-                    min: 0.0,
-                    max: 1.0,
-                    value: _volumeValue,
-                    interval: 0.1,
-                    showTicks: false,
-                    showLabels: false,
-                    enableTooltip: false,
-                    onChangeEnd: (val) {
-                      addVolumeTimer();
-                      createHideControlBarTimer();
-                    },
-                    // minorTicksPerInterval: 1,
-                    onChanged: (dynamic value) {
-                      // setState(() {
-                      clearHideControlBarTimer();
-                      removeVolumeTimer();
-                      _volumeValue = value;
-                      debugPrint("volume is ${value}");
-                      //视频播放音量
-                      //强制静音时，视屏声音不开启
-                      if (!_forceMute) {
-                        controller?.setVolume(_volumeValue);
-                      } //系统volume
-                      VolumeController()
-                          .setVolume(_volumeValue, showSystemUI: false);
-                      setState(() {});
-                      // });
-                    },
-                  ),
-                )))
-      ],
-    );
-  }
+  // Widget _volumeWidget() {
+  //   return Stack(
+  //     children: [
+  //       Positioned(
+  //           top: 52,
+  //           right: 54,
+  //           bottom: 52,
+  //           child: Visibility(
+  //               visible: _showVolume,
+  //               child: SfSliderTheme(
+  //                 data: SfSliderThemeData(
+  //                   thumbRadius: 8.0,
+  //                   thumbStrokeColor: Colors.transparent,
+  //                   thumbStrokeWidth: null,
+  //                   activeTrackHeight: 8,
+  //                   inactiveTrackHeight: 8,
+  //                   activeTrackColor: Colors.black,
+  //                   // inactiveTrackColor: ColorSet.gray_e4e7ed,
+  //                   tooltipBackgroundColor: Colors.transparent,
+  //                   // tooltipTextStyle: TextStyle(fontFamily: Font_kraftig,fontSize: 13,height: 1.23,color: ColorSet.black_03),
+  //                   overlayColor: Color(0xff0091FF),
+  //                   // tooltipBackgroundColor: Colors.white
+  //                 ),
+  //                 child: SfSlider.vertical(
+  //                   thumbIcon: Container(
+  //                     width: 16,
+  //                     height: 16,
+  //                     decoration: BoxDecoration(
+  //                         color: Colors.white,
+  //                         borderRadius: BorderRadius.circular(8)),
+  //                   ),
+  //                   activeColor: Color(0xff0091FF),
+  //                   inactiveColor: Color(0xff02091a).withOpacity(0.1),
+  //                   min: 0.0,
+  //                   max: 1.0,
+  //                   value: _volumeValue,
+  //                   interval: 0.1,
+  //                   showTicks: false,
+  //                   showLabels: false,
+  //                   enableTooltip: false,
+  //                   onChangeEnd: (val) {
+  //                     addVolumeTimer();
+  //                     createHideControlBarTimer();
+  //                   },
+  //                   // minorTicksPerInterval: 1,
+  //                   onChanged: (dynamic value) {
+  //                     // setState(() {
+  //                     clearHideControlBarTimer();
+  //                     removeVolumeTimer();
+  //                     _volumeValue = value;
+  //                     debugPrint("volume is ${value}");
+  //                     //视频播放音量
+  //                     //强制静音时，视屏声音不开启
+  //                     if (!_forceMute) {
+  //                       controller?.setVolume(_volumeValue);
+  //                     } //系统volume
+  //                     VolumeController()
+  //                         .setVolume(_volumeValue, showSystemUI: false);
+  //                     setState(() {});
+  //                     // });
+  //                   },
+  //                 ),
+  //               )))
+  //     ],
+  //   );
+  // }
 }
