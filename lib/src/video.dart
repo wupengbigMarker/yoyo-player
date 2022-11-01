@@ -177,12 +177,19 @@ class YoYoPlayerState extends State<YoYoPlayer>
       //   
       // }
       _volumeValue = volume;
-      controller?.setVolume(_volumeValue);
-      if(volume == 0){
+      if(_isFristOpen){
+        _isFristOpen = false;
         _forceMute = true;
+        controller?.setVolume(0.0);
       }else{
-        _forceMute = false;
+        controller?.setVolume(_volumeValue);
+        if(_volumeValue == 0){
+          _forceMute = true;
+        }else{
+          _forceMute = false;
+        }
       }
+      
       
     });
 
