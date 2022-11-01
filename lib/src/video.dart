@@ -163,19 +163,8 @@ class YoYoPlayerState extends State<YoYoPlayer>
 
     //监听系统播放音量
     VolumeController().listener((volume) {
-      // if (!_isFristOpen) {
-      //   _showVolume = true;
-      //   _volumeValue = volume;
-      //   addVolumeTimer();
-      // } else {
-      //   _volumeValue = 0;
-      //   _isFristOpen = false;
-      // }
-
-      // ///非强制静音下，视频声音可随系统按键调整
-      // if (!_forceMute) {
-      //   
-      // }
+      
+      // 初次进入静音
       _volumeValue = volume;
       if(_isFristOpen){
         _isFristOpen = false;
