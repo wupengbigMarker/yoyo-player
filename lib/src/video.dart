@@ -199,7 +199,8 @@ class YoYoPlayerState extends State<YoYoPlayer>
   }
 
   forceMuteAction(bool isMute) {
-    // _forceMute = isMute;
+    // 利用currentState调用时需要给forceMute赋值
+    _forceMute = isMute;
     if (isMute) {
       controller?.setVolume(0);
     } else {
